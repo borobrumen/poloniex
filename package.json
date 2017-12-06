@@ -10,6 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "autobahn": "^17.5.2",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "nodemon": "^1.12.5",
+    "poloniex-api-node": "^1.6.5",
+    "traverse": "^0.6.6"
   }
 }
