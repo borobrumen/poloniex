@@ -1,6 +1,9 @@
 var connStat = "closed";
 var connection = require("./connection");  //ref to the connection to poloniex
+var stock = require("./data/stock");  //ref to the connection to poloniex
 var tickTimer = 5000; //update every 5 seconds
+var stocks = {};
+var clone = require('clone');
 
 function updateMarketData(tickData) {
 console.log("-->(stockStats.js/updateMarketData)");
@@ -10,6 +13,10 @@ console.log("-->(stockStats.js/updateMarketData)");
     if (tickData.hasOwnProperty(key)) {
         /* useful code here */
 				console.log(key + ":" + JSON.stringify(tickData[key]));
+				if(stocks[key] == undefined) {
+					stocks[key] = clone(stock); //create new object
+				}
+				stocks[key].setData(key, tickData[key]);
     }
 	}
 }
