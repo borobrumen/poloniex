@@ -1,11 +1,5 @@
-
-/**
-    Stock Stats
-*/
-var stockStats = require('./modules/trading/stockStats');
-//start listening to stock stats
-stockStats.startListening();
-
+//initializes the whole game
+var gameContrl = require('./modules/gameContrl');
 
 /**
     EXPRESS HTTP

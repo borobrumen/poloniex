@@ -4,8 +4,13 @@ var stock = require("./data/stock");  //ref to the connection to poloniex
 var tickTimer = 5000; //update every 5 seconds
 var stocks = {};
 var clone = require('clone');
+var poloniex;
 
-function updateMarketData(tickData) {
+/**
+	update market data every n seconds and
+	refresh all objects connected to the data
+*/
+function parseStats(tickData) {
 console.log("-->(stockStats.js/updateMarketData)");
 
 	//parse the data
@@ -21,29 +26,26 @@ console.log("-->(stockStats.js/updateMarketData)");
 	}
 }
 
-/**
-	makes a tick every n seconds and updates the stock market data
-*/
-function startTickLoop(poloniex) {
-	console.log("-->(stockStats.js/startTickLoop)");
-	(function tick() {
-		poloniex.returnTicker((err, ticker) => {
-			if (err) {
-				console.log(err.message);
-			} else {
-				updateMarketData(ticker);
-			}
-		});
-		//call again
-		setTimeout(tick, tickTimer);
-	})();
-}
-
 module.exports = {
 	startListening : function() {
 		console.log("-->(stockStats.js/startListening)");
-		var poloniex = connection.open();
-		startTickLoop(poloniex);
+		poloniex = connection.open();
+	},
+
+  /**
+		async function which sends a callback call after
+		market data has been successfully parsed and stored
+	*/
+	updateMarketData: function (callbackOnCompleted) {
+		console.log("-->(stockStats.js/updateMarketData)");
+		poloniex.returnTicker((err, ticker) => {
+				if (err) {
+					console.log(err.message);
+				} else {
+					parseStats(ticker);
+					callbackOnCompleted();
+				}
+			});
 	},
 
 	getAllStats : function() {
